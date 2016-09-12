@@ -8,6 +8,9 @@ use LibreEHR\Core\Contracts\AppointmentInterface;
 
 class AppointmentData extends Model implements AppointmentInterface
 {
+
+    protected $connection = 'mysql';
+    
     protected $table = 'libreehr_postcalendar_events';
 
     protected $primaryKey = 'pc_eid';
@@ -126,7 +129,7 @@ class AppointmentData extends Model implements AppointmentInterface
             0 => ['option_id', 'like', $status],
             1 => ['list_id', 'like', $this->listId]
         ];
-        return DB::table('list_options')->where($conditions)->value('mapping');
+        return DB::connection($this->connection)->table('list_options')->where($conditions)->value('mapping');
     }
 
     private function encodeStatus($status)
@@ -135,6 +138,6 @@ class AppointmentData extends Model implements AppointmentInterface
             0 => ['mapping', 'like', $status],
             1 => ['list_id', 'like', $this->listId]
         ];
-        return DB::table('list_options')->where($conditions)->value('option_id');
+        return DB::connection($this->connection)->table('list_options')->where($conditions)->value('option_id');
     }
 }
